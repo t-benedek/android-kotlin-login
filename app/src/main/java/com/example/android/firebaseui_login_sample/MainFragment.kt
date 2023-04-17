@@ -61,6 +61,11 @@ class MainFragment : Fragment() {
         observeAuthenticationState()
 
         binding.authButton.setOnClickListener { launchSignInFlow() }
+
+        binding.settingsBtn.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToSettingsFragment()
+            findNavController().navigate(action)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -128,8 +133,9 @@ class MainFragment : Fragment() {
         // If users choose to register with their email,
         // they will need to create a password as well
         val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build()
-            //
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+
         )
 
         // Create and launch sign-in intent.
@@ -137,8 +143,8 @@ class MainFragment : Fragment() {
         // SIGN_IN_RESULT_CODE code
         startActivityForResult(
             AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
-                    providers
-                ).build(), MainFragment.SIGN_IN_RESULT_CODE
+                providers
+            ).build(), MainFragment.SIGN_IN_RESULT_CODE
         )
     }
 }
